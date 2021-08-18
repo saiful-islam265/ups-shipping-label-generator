@@ -1,0 +1,5 @@
+{
+    "require": {
+        "gabrielbull/ups-api": "^2.0"
+    }
+}
