@@ -1,29 +1,31 @@
 <?php
 /**
  * Plugin Name: UPS Shipping Label Generator
- * Plugin URI:  https://wppool.dev
+ * Plugin URI:  www.saifulislam.dev
  * Description: This plugin will create shipping label for ups courier right after any order created.
  * Version:     1.0
  * Author:      Saiful Islam
- * Author URI:  https://wppool.dev
+ * Author URI:  www.saifulislam.dev
  * Text Domain: hoodsly-hub
  * Domain Path: /languages/
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  */
+
 if (!defined('ABSPATH')) {
     exit;
 }
-
 require_once __DIR__.'/vendor/autoload.php';
 
-
+/**
+ * Generte shipping label through UPS api "class"
+ */
 final class UPSShippingLabel
 {
     const VERSION = '1.0.0';
     const ACCESSKEY = '9DA11D2B5E981955';
-    const USERID = 'HollieJFox';
-    const PASSWORD = 'HypeMill2020';
+    const USERID = 'Holliejfox';
+    const PASSWORD = 'Hoodsly2020!';
     public $shipment = '';
     public $package = '';
     public $shipper = '';
@@ -38,6 +40,10 @@ final class UPSShippingLabel
     public $dimensions = '';
     public $api = '';
     private $shipping_label_dir = '';
+
+    /**
+     * initializing plugin
+     */
     public function __construct()
     {
         add_action('woocommerce_thankyou', [$this, 'create_shipping_label'], 10, 1);
@@ -47,6 +53,10 @@ final class UPSShippingLabel
         add_action('manage_shop_order_posts_custom_column', [$this, 'populate_bol_column_data'], 10, 2);
     }
 
+    /**
+     * Summary of test_data
+     * @return void
+     */
     function test_data(){
         //$this->shipment = new Ups\Entity\Shipment;
         $order = new WC_Order('13957');
@@ -67,21 +77,24 @@ final class UPSShippingLabel
                 break;
             }
         }
-        
-        // 4. Echo image only if $cat_in_order == true   
-        /* if ( $cat_in_order ) {
-            //write_log($woocommerce_dimension_unit);
-            $order->update_status( 'wc-completed', '', true );
-        } */
-        //
     }
     
-    // wc order BOL column
+    /**
+     * Added shipping label column in woocommerce order list page
+     * @param mixed $columns
+     * @return mixed
+     */
     public function add_bol_column( $columns ) {
         $columns['ups_shipping_label'] = __("UPS Shipping Label", '');
         return $columns;
     }
 
+    /**
+     * Displaying shipping label pdf in woocommerce order list page
+     * @param mixed $column
+     * @param mixed $post_id
+     * @return void
+     */
     public function populate_bol_column_data($column, $post_id){
         $upload_dir = wp_upload_dir();
         $confirmation_data_array = get_post_meta( $post_id, 'confirmation_data_array',  true);
@@ -96,10 +109,7 @@ final class UPSShippingLabel
                 fclose($ifp);
                 $pritable_link = $upload_dir['baseurl'] . '/shipping_label/'. "$post_id.gif";
                 printf('<a href="%s" target="_blank">%s</a>',$pritable_link, __('View', ''));
-            }/*  else{
-                //write_log("kich8");
-                printf('<a href="#" class="gen_ship_lab" data-bol="">%s</a>', __('Generate', ''));
-            } */
+            }
         }
     }
     /**
@@ -116,6 +126,10 @@ final class UPSShippingLabel
         return $instance;
     }
 
+    /**
+     * Creates shipping label directory in wp upoloads directory
+     * @return void
+     */
     public function create_shipping_label_dir(){
         $upload_dir   = wp_upload_dir();
         $shipping_dir = $upload_dir["basedir"] . "/shipping_label";
@@ -125,28 +139,29 @@ final class UPSShippingLabel
         $this->shipping_label_dir = $shipping_dir;
     }
 
-    public function create_shipping_label($order_id)
-    {
+    /**
+     * Creates shipping label in pdf through ups api and saves in wp directory
+     * @param mixed $order_id
+     * @return void
+     */
+    public function create_shipping_label ($order_id){
+        write_log($order_id);
         $order = wc_get_order($order_id);
         $items = $order->get_items();
-        $cat_in_order = false;
         foreach ( $items as $item ) {
             $product_id = $item->get_product_id();
             $product = wc_get_product( $product_id );
-            if ( has_term( 'Samples', 'product_cat', $product_id ) ) {
-                $woocommerce_dimension_unit = get_option('woocommerce_dimension_unit');
-                $woocommerce_weight_unit = get_option('woocommerce_weight_unit');
-                $weight = $product->get_weight();
-                $length = $product->get_length();
-                $width = $product->get_width();
-                $height = $product->get_height();
-                $cat_in_order = true;
-                break;
-            }
+            $woocommerce_dimension_unit = get_option('woocommerce_dimension_unit');
+            $woocommerce_weight_unit = get_option('woocommerce_weight_unit');
+            $weight = $product->get_weight();
+            $length = $product->get_length();
+            $width = $product->get_width();
+            $height = $product->get_height();
+            break;
         }
         
         // 4. Echo image only if $cat_in_order == true   
-        if ($cat_in_order) {
+
             $this->shipment = new Ups\Entity\Shipment;
             // $line_items = array();
             // foreach ($order->get_items() as  $item_key => $item_values) {
@@ -324,12 +339,12 @@ final class UPSShippingLabel
             } catch (\Exception $e) {
                 var_dump($e);
             }
-            /* $label_file = $order_id .".gif";
+            $label_file = $order_id .".gif";
             $base64_string = $accept->PackageResults->LabelImage->GraphicImage;
             $ifp = fopen($label_file, 'wb');
             fwrite($ifp, base64_decode($base64_string));
-            fclose($ifp); */
-        }
+            fclose($ifp);
+        
     }
 }
 
