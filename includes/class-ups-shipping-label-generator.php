@@ -7,9 +7,6 @@ require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
  * Generte shipping label "class"
  */
 final class UPS_Shipping_Label_Generator {
-	const ACCESSKEY = '9DA11D2B5E981955';
-	const USERID = 'Holliejfox';
-	const PASSWORD = 'Hoodsly2020!';
 	public $shipment = '';
 	public $package = '';
 	public $shipper = '';
@@ -33,7 +30,7 @@ final class UPS_Shipping_Label_Generator {
 		add_action('plugins_loaded', [$this, 'create_shipping_label_dir']);add_filter('manage_edit-shop_order_columns', [$this, 'add_bol_column']);
 		add_action('manage_shop_order_posts_custom_column', [$this, 'populate_bol_column_data'], 10, 2);
 		$this->load_dependencies();
-		$plugin_admin = new UPS_Shipping_Label_Generator_Admin();
+		new UPS_Shipping_Label_Generator_Admin();
 	}
 
 	/**
@@ -76,11 +73,11 @@ final class UPS_Shipping_Label_Generator {
 		
 		if ('ups_shipping_label' == $column) {
 			if (!empty($confirmation_data_array) && is_array($confirmation_data_array)) {
-				$pdf = $this->shipping_label_dir . '/'. "$post_id.gif";
+				/* $pdf = $this->shipping_label_dir . '/'. "$post_id.gif";
 				$base64_string = $confirmation_data_array['PackageResults']->LabelImage->GraphicImage;
 				$ifp = fopen($pdf, 'wb');
 				fwrite($ifp, base64_decode($base64_string));
-				fclose($ifp);
+				fclose($ifp); */
 				$pritable_link = $upload_dir['baseurl'] . '/shipping_label/'. "$post_id.gif";
 				printf('<a href="%s" target="_blank">%s</a>', $pritable_link, __('View', ''));
 			}
@@ -122,8 +119,23 @@ final class UPS_Shipping_Label_Generator {
 	 * 
 	 * @return void
 	 */
-	public function create_shipping_label($order_id)
-	{
+	public function create_shipping_label($order_id){
+		$shipper_info = get_option('ups_shipper_info');
+		$api_info = get_option('ups_account_details');
+		$access_key = $api_info['Access Key/API Key'];
+		$ups_user_id = $api_info['UPS Username/UserID'];
+		$ups_user_pass = $api_info['UPS User Password'];
+		$account_number = $shipper_info['UPS Shipper Number / Account Number'];
+		$shipper_name = $shipper_info['Shipper Name'];
+		$attention_name = $shipper_info['Shipper Attention Name/ Business Name'];
+		$address_line = $shipper_info['Shipper Address Line'];
+		$postal_code = $shipper_info['Shipper Postal Code'];
+		$shipper_city = $shipper_info['Shipper City'];
+		$state_code = $shipper_info['Shipper State Province Code'];
+		$country_code = $shipper_info['Shipper Country Code'];
+		$shipper_email = $shipper_info['Shipper Email Address'];
+		$shipper_phone = $shipper_info['Shipper Phone Number'];
+
 		$order = wc_get_order($order_id);
 		$items = $order->get_items();
 		foreach ( $items as $item ) {
@@ -278,7 +290,7 @@ final class UPS_Shipping_Label_Generator {
 		$this->shipment->setRateInformation($this->rateInformation);
 		// Get shipment info
 		try {
-			$this->api = new Ups\Shipping(self::ACCESSKEY, self::USERID, self::PASSWORD);
+			$this->api = new Ups\Shipping($access_key, $ups_user_id, $ups_user_pass);
 			$confirm = $this->api->confirm(\Ups\Shipping::REQ_VALIDATE, $this->shipment);
 			update_post_meta($order_id, 'created_shipments_details_array', (array) $confirm);
 			update_post_meta($order_id, 'ShipmentIdentificationNumber', $confirm->ShipmentIdentificationNumber);
@@ -288,12 +300,23 @@ final class UPS_Shipping_Label_Generator {
 				$order->update_status('wc-completed', '', true);
 			}
 		} catch (\Exception $e) {
-			echo $e->errorMessage();
+			echo $e->getMessage();
 		}
-		$label_file = $order_id .".gif";
+		$label_file = $this->shipping_label_dir . '/'. "$order_id.pdf";
 		$base64_string = $accept->PackageResults->LabelImage->GraphicImage;
-		$ifp = fopen($label_file, 'wb');
+		/* $ifp = fopen($label_file, 'wb');
 		fwrite($ifp, base64_decode($base64_string));
-		fclose($ifp);
+		fclose($ifp); */
+		$imagick = new Imagick();
+		$imagick->readImageBlob($base64_string);
+		$imagick->rotateImage(new ImagickPixel(), 90);
+		$imagick->setFormat("pdf");
+		$imagick->writeImage($label_file);
+		
+		/* $degrees = 270;
+		$source = imagecreatefromgif($label_file);
+		$rotate = imagerotate($source, $degrees, 0);
+		$img_resized = imagescale($rotate, 595, 816);
+		imagegif($img_resized, $label_file); */
 	}
 }
