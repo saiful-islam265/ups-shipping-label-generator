@@ -1,7 +1,8 @@
 <?php
 
-//Load the autoloader.
+//Load the autoloader and FPDF.
 require_once plugin_dir_path( __FILE__ ) . '../vendor/autoload.php';
+require_once plugin_dir_path( __FILE__ ) . '../includes/fpdf/fpdf.php';
 
 /**
  * Generte shipping label "class"
@@ -78,7 +79,7 @@ final class UPS_Shipping_Label_Generator {
 				$ifp = fopen($pdf, 'wb');
 				fwrite($ifp, base64_decode($base64_string));
 				fclose($ifp); */
-				$pritable_link = $upload_dir['baseurl'] . '/shipping_label/'. "$post_id.gif";
+				$pritable_link = $upload_dir['baseurl'] . '/shipping_label/'. "$post_id.pdf";
 				printf('<a href="%s" target="_blank">%s</a>', $pritable_link, __('View', ''));
 			}
 		}
@@ -302,21 +303,29 @@ final class UPS_Shipping_Label_Generator {
 		} catch (\Exception $e) {
 			echo $e->getMessage();
 		}
-		$label_file = $this->shipping_label_dir . '/'. "$order_id.pdf";
+
+		//Generate GIF from UPS API response
+		$label_file = $this->shipping_label_dir . '/'. "$order_id.gif";
+		$pdf_file = $this->shipping_label_dir . '/'. "$order_id.pdf";
 		$base64_string = $accept->PackageResults->LabelImage->GraphicImage;
-		/* $ifp = fopen($label_file, 'wb');
+		$ifp = fopen($label_file, 'wb');
 		fwrite($ifp, base64_decode($base64_string));
-		fclose($ifp); */
-		$imagick = new Imagick();
-		$imagick->readImageBlob($base64_string);
-		$imagick->rotateImage(new ImagickPixel(), 90);
-		$imagick->setFormat("pdf");
-		$imagick->writeImage($label_file);
-		
-		/* $degrees = 270;
+		fclose($ifp);
+
+		//Rotate gif file in vertical
+		$degrees = 270;
 		$source = imagecreatefromgif($label_file);
 		$rotate = imagerotate($source, $degrees, 0);
 		$img_resized = imagescale($rotate, 595, 816);
-		imagegif($img_resized, $label_file); */
+		imagegif($img_resized, $label_file);
+
+		//Generate PDF out of GIF
+		$pdf = new FPDF();
+		$pdf->AddPage();
+		$pdf->Image($label_file, 0, 0, 210, 340, 'gif');
+		$pdf->Output($pdf_file,'F');
+
+		//Delete temp generated gif file
+		unlink($label_file);
 	}
 }
