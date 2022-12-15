@@ -168,7 +168,7 @@ class UPS_Shipping_Label_Generator_Admin {
 
 			<form method="post" action="options.php">  
 				<?php
-				if( $active_tab == 'first' ) {  
+				if( $active_tab == 'first' ) {
 					settings_fields( 'ups_account_details' );
 					do_settings_sections( 'ups_account_details' ); 
 				} else if( $active_tab == 'second' ) {

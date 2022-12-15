@@ -73,12 +73,7 @@ final class UPS_Shipping_Label_Generator {
 		$confirmation_data_array = get_post_meta($post_id, 'confirmation_data_array',  true);
 		
 		if ('ups_shipping_label' == $column) {
-			if (!empty($confirmation_data_array) && is_array($confirmation_data_array)) {
-				/* $pdf = $this->shipping_label_dir . '/'. "$post_id.gif";
-				$base64_string = $confirmation_data_array['PackageResults']->LabelImage->GraphicImage;
-				$ifp = fopen($pdf, 'wb');
-				fwrite($ifp, base64_decode($base64_string));
-				fclose($ifp); */
+			if (!empty($confirmation_data_array) && is_array($confirmation_data_array)){
 				$pritable_link = $upload_dir['baseurl'] . '/shipping_label/'. "$post_id.pdf";
 				printf('<a href="%s" target="_blank">%s</a>', $pritable_link, __('View', ''));
 			}
@@ -89,8 +84,7 @@ final class UPS_Shipping_Label_Generator {
 	 *
 	 * @return void
 	 */
-	public static function init()
-	{
+	public static function init(){
 		static $instance = false;
 		if (!$instance) {
 			$instance = new self();
@@ -103,8 +97,7 @@ final class UPS_Shipping_Label_Generator {
 	 * 
 	 * @return void
 	 */
-	public function create_shipping_label_dir()
-	{
+	public function create_shipping_label_dir(){
 		$upload_dir   = wp_upload_dir();
 		$shipping_dir = $upload_dir["basedir"] . "/shipping_label";
 		if (!file_exists($shipping_dir)) {
@@ -154,18 +147,18 @@ final class UPS_Shipping_Label_Generator {
 		$this->shipment = new Ups\Entity\Shipment;
 		// Set shipper
 		$this->shipper = $this->shipment->getShipper();
-		$this->shipper->setShipperNumber('0A160X');
-		$this->shipper->setName('HypeMill/Red Industries');
-		$this->shipper->setAttentionName('HypeMill');
+		$this->shipper->setShipperNumber($account_number);
+		$this->shipper->setName($shipper_name);
+		$this->shipper->setAttentionName($attention_name);
 		$this->shipperAddress = $this->shipper->getAddress();
-		$this->shipperAddress->setAddressLine1('1236 Industrial Ave #107');
-		$this->shipperAddress->setPostalCode('28054');
-		$this->shipperAddress->setCity('GASTONIA');
-		$this->shipperAddress->setStateProvinceCode('NC'); // required in US
-		$this->shipperAddress->setCountryCode('US');
+		$this->shipperAddress->setAddressLine1($address_line);
+		$this->shipperAddress->setPostalCode($postal_code);
+		$this->shipperAddress->setCity($shipper_city);
+		$this->shipperAddress->setStateProvinceCode($state_code); // required in US
+		$this->shipperAddress->setCountryCode($country_code);
 		$this->shipper->setAddress($this->shipperAddress);
-		$this->shipper->setEmailAddress('hello@hoodsly.com');
-		$this->shipper->setPhoneNumber('8778470405');
+		$this->shipper->setEmailAddress($shipper_email);
+		$this->shipper->setPhoneNumber($shipper_phone);
 		$this->shipment->setShipper($this->shipper);
 
 		// shipping
@@ -187,18 +180,18 @@ final class UPS_Shipping_Label_Generator {
 
 		// From address
 		$this->address = new \Ups\Entity\Address();
-		$this->address->setAddressLine1('1236 Industrial Ave #107');
-		$this->address->setPostalCode('28054');
-		$this->address->setCity('GASTONIA');
-		$this->address->setStateProvinceCode('NC');
-		$this->address->setCountryCode('US');
+		$this->address->setAddressLine1($address_line);
+		$this->address->setPostalCode($postal_code);
+		$this->address->setCity($shipper_city);
+		$this->address->setStateProvinceCode($state_code);
+		$this->address->setCountryCode($country_code);
 		$this->shipFrom = new \Ups\Entity\ShipFrom();
 		$this->shipFrom->setAddress($this->address);
-		$this->shipFrom->setName('HypeMill');
+		$this->shipFrom->setName($shipper_name);
 		$this->shipFrom->setAttentionName($this->shipFrom->getName());
-		$this->shipFrom->setCompanyName('HypeMill/Red Industries');
-		$this->shipFrom->setEmailAddress('hello@hoodsly.com');
-		$this->shipFrom->setPhoneNumber('8778470405');
+		$this->shipFrom->setCompanyName($attention_name);
+		$this->shipFrom->setEmailAddress($shipper_email);
+		$this->shipFrom->setPhoneNumber($shipper_phone);
 		$this->shipment->setShipFrom($this->shipFrom);
 
 		// Sold to
