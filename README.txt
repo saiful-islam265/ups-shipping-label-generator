@@ -1,7 +1,6 @@
-=== UPS Shipping Label PDF Generator For Woocommerce ===
+=== Shipping Label PDF Generator With UPS For Woocommerce ===
 Contributors: saiful96
 Tags: woocommerce, UPS, UPS Shipping Label, Shipping Label, Shipping Label PDF, PDF
-Donate link: https://www.saifulislam.dev/donate
 Requires at least: 4.7
 Tested up to: 6.1.1
 Requires PHP: 5.4
@@ -9,7 +8,7 @@ Stable tag: 1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-**UPS Shipping Label PDF Generator For Woocommerce** is a PDF generator from UPS Shipping Label. And this PDF will be available for print.
+**Shipping Label PDF Generator With UPS For Woocommerce** is a PDF generator from UPS API.
 
 == Description ==
 You can use this plugin in any of your woocommerce powered sites. This plugin will generate pdf out of UPS shipping label data from UPS api. And generated pdf will be available on woocommerce order list page under column name **UPS Shipping Label**
@@ -18,11 +17,11 @@ You can use this plugin in any of your woocommerce powered sites. This plugin wi
 *  Always use valid address to generate UPS shipping label
 
 == Installation ==
-To install UPS Shipping Label PDF Generator For Woocommerce, follow these steps:
-1. Download and unzip the UPS Shipping Label PDF Generator For Woocommerce
+To install Shipping Label PDF Generator With UPS For Woocommerce, follow these steps:
+1. Download and unzip the Shipping Label PDF Generator With UPS For Woocommerce
 2. Upload the entire ups-shipping-label-generator/ directory to the /wp-content/plugins/ directory
-3. Activate the UPS Shipping Label PDF Generator For WooCommerce plugin through the Plugins menu in WordPress
-4. Configure the settings at the administration menu >> UPS Shipping Label PDF Generator For Woocommerce.
+3. Activate the Shipping Label PDF Generator With UPS For Woocommerce plugin through the Plugins menu in WordPress
+4. Configure the settings at the administration menu >> Shipping Label PDF Generator With UPS For Woocommerce.
 5. You have to put all the settings field values like API info, account info & shipper info.
 
 == Frequently Asked Questions ==
