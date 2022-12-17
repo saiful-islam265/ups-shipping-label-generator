@@ -9,8 +9,7 @@
  * Author:      Saiful Islam
  * Author URI:   http://www.saifulislam.dev
  * Text Domain: shipping-label-gen
- * Domain Path: /languages/
- * License:     GPL-2.0+
+ * License:     GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
@@ -18,11 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SHIPPING_LABEL_GENERATOR_VERSION', '1.0.0' );
-define( 'PLUGIN_NAME', 'SHIPPING_LABEL_GENERATOR' );
 /**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
+ * Requires main plugin file
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-ups-shipping-label-generator.php';
 

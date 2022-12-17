@@ -144,8 +144,7 @@ class UPS_Shipping_Label_Generator_Admin {
 	 */
 	public function text_callback($args) { 
 		$options = get_option($args[0]);
-		//write_log($args);
-		echo '<input type="text" class="regular-text" id="'  . $args[1] . '" name="'. $args[0] .'['  . $args[1] . ']" value="' . $options[''  . $args[1] . ''] . '"></input>';
+		echo '<input type="text" class="regular-text" id="' . esc_attr($args[1]) . '" name="'. esc_html($args[0]) .'[' . esc_html($args[1]) . ']" value="' . esc_html($options['' . $args[1] . '']) . '"></input>';
 	}
 
 	/**
@@ -156,14 +155,14 @@ class UPS_Shipping_Label_Generator_Admin {
 		?>
 		<div class="wrap">  
 			<div id="icon-themes" class="icon32"></div>  
-			<h2><?php __('UPS Settings', 'shipping-label-gen')?></h2>  
+			<h2><?php _e('UPS Settings', 'shipping-label-gen')?></h2>  
 			<?php
 				settings_errors(); 
 				$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'first';  
 			?>
 			<h2 class="nav-tab-wrapper">  
-				<a href="?page=ups-setting-general-options&tab=first" class="nav-tab <?php echo $active_tab == 'first' ? 'nav-tab-active' : ''; ?>"><?php _e('Account & API Info', 'shipping-label-gen')?></a>  
-				<a href="?page=ups-setting-general-options&tab=second" class="nav-tab <?php echo $active_tab == 'second' ? 'nav-tab-active' : ''; ?>"><?php _e('Shipper Info', 'shipping-label-gen')?></a>
+				<a href="?page=ups-setting-general-options&tab=first" class="nav-tab <?php echo esc_attr($active_tab) == 'first' ? 'nav-tab-active' : ''; ?>"><?php _e('Account & API Info', 'shipping-label-gen')?></a>  
+				<a href="?page=ups-setting-general-options&tab=second" class="nav-tab <?php echo esc_attr($active_tab) == 'second' ? 'nav-tab-active' : ''; ?>"><?php _e('Shipper Info', 'shipping-label-gen')?></a>
 			</h2>  
 
 			<form method="post" action="options.php">  
