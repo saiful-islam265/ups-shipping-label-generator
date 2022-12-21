@@ -34,7 +34,7 @@ class Shipping_Label_Generator_Admin_UPS {
 	public function ups_setting_options() { 
 		$settings = array(
 			'setting_1_id' => array(
-				'title'=>'Account & API Info',
+				'title'=>__('Account & API Info'),
 				'page'=>'ups_account_details',
 				'fields'=> array(
 					array(
@@ -55,7 +55,7 @@ class Shipping_Label_Generator_Admin_UPS {
 				)
 			),
 			'setting_2_id' => array(
-				'title'=>'Shipper Info',
+				'title'=>__('Shipper Info'),
 				'page'=>'ups_shipper_info',
 				'fields'=> array(
 					array(
@@ -133,10 +133,27 @@ class Shipping_Label_Generator_Admin_UPS {
 					) 
 				);
 			}
-			register_setting($values['page'], $values['page']);
+			register_setting(
+				$values['page'],
+				$values['page'],
+				array(
+					'sanitize_callback' => [$this, 'sanitize_register_field']
+				)
+			);
 		} // end of foreach
 	} // end of ups_setting_options()
 
+	/**
+	 * sanitize settings
+	 * @param mixed $option
+	 * @return string
+	 */
+	public function sanitize_register_field( $option ){
+		//sanitize
+		$option = sanitize_text_field($option);
+		
+		return $option;
+	}
 	/**
 	 * Callback for text type input field rendering
 	 * @param mixed $args
@@ -158,7 +175,7 @@ class Shipping_Label_Generator_Admin_UPS {
 			<h2><?php _e('UPS Settings', 'shipping-label-gen')?></h2>  
 			<?php
 				settings_errors(); 
-				$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'first';  
+				$active_tab = isset( $_GET[ 'tab' ] ) ? sanitize_text_field($_GET[ 'tab' ]) : 'first';  
 			?>
 			<h2 class="nav-tab-wrapper">  
 				<a href="?page=ups-setting-general-options&tab=first" class="nav-tab <?php echo esc_attr($active_tab) == 'first' ? 'nav-tab-active' : ''; ?>"><?php _e('Account & API Info', 'shipping-label-gen')?></a>  

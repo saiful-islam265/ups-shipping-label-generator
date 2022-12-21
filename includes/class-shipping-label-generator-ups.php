@@ -56,7 +56,7 @@ final class Shipping_Label_Generator_UPS {
 	 * @return mixed
 	 */
 	public function add_bol_column( $columns ){
-		$columns['ups_shipping_label'] = __("UPS Shipping Label", '');
+		$columns['ups_shipping_label'] = __("UPS Shipping Label", 'shipping-label-gen');
 		return $columns;
 	}
 
@@ -75,7 +75,7 @@ final class Shipping_Label_Generator_UPS {
 		if ('ups_shipping_label' == $column) {
 			if (!empty($confirmation_data_array) && is_array($confirmation_data_array)){
 				$pritable_link = $upload_dir['baseurl'] . '/shipping_label/'. "$post_id.pdf";
-				printf('<a href="%s" target="_blank">%s</a>', $pritable_link, __('View', ''));
+				printf('<a href="%s" target="_blank">%s</a>', esc_url($pritable_link), __('View', ''));
 			}
 		}
 	}
@@ -109,7 +109,7 @@ final class Shipping_Label_Generator_UPS {
 	/**
 	 * Creates shipping label in pdf through ups api and saves in wp directory
 	 * 
-	 * @param $order_id order_id 
+	 * @param $order_id 
 	 * 
 	 * @return void
 	 */
