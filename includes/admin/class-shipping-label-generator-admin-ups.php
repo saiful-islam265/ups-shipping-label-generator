@@ -20,8 +20,8 @@ class Shipping_Label_Generator_Admin_UPS {
 	public function ups_setting_admin() {
 		/* Base Menu */
 		add_menu_page(
-		__('UPS Settings', 'shipping-label-gen'),  // Admin page title
-		__('UPS Settings', 'shipping-label-gen'),  // Admin menu label
+		__('UPS Settings', 'shipping-label-generator-with-ups'),  // Admin page title
+		__('UPS Settings', 'shipping-label-generator-with-ups'),  // Admin menu label
 		'manage_options',
 		'ups-setting-general-options', // Admin slug
 		[$this, 'ups_setting_general_index']); // Display Page
@@ -39,17 +39,17 @@ class Shipping_Label_Generator_Admin_UPS {
 				'fields'=> array(
 					array(
 						'id'=> 'ups_access_key',
-						'title'=>__('Access Key/API Key', 'shipping-label-gen'),
+						'title'=>__('Access Key/API Key', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_access_userid',
-						'title'=>__('UPS Username/UserID', 'shipping-label-gen'),
+						'title'=>__('UPS Username/UserID', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this,'text_callback']
 					),
 					array(
 						'id'=> 'ups_access_userpass',
-						'title'=>__('UPS User Password', 'shipping-label-gen'),
+						'title'=>__('UPS User Password', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this,'text_callback']
 					),
 				)
@@ -60,52 +60,52 @@ class Shipping_Label_Generator_Admin_UPS {
 				'fields'=> array(
 					array(
 						'id'=> 'ups_shipper_number',
-						'title'=>__('UPS Shipper Number / Account Number', 'shipping-label-gen'),
+						'title'=>__('UPS Shipper Number / Account Number', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_shipper_name',
-						'title'=>__('Shipper Name', 'shipping-label-gen'),
+						'title'=>__('Shipper Name', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_shipper_attention_name',
-						'title'=>__('Shipper Attention Name/ Business Name', 'shipping-label-gen'),
+						'title'=>__('Shipper Attention Name/ Business Name', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_shipper_address_line',
-						'title'=>__('Shipper Address Line', 'shipping-label-gen'),
+						'title'=>__('Shipper Address Line', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_shipper_postal_code',
-						'title'=>__('Shipper Postal Code', 'shipping-label-gen'),
+						'title'=>__('Shipper Postal Code', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_shipper_city',
-						'title'=>__('Shipper City', 'shipping-label-gen'),
+						'title'=>__('Shipper City', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_shipper_state_province_code',
-						'title'=>__('Shipper State Province Code', 'shipping-label-gen'),
+						'title'=>__('Shipper State Province Code', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_shipper_country_code',
-						'title'=>__('Shipper Country Code', 'shipping-label-gen'),
+						'title'=>__('Shipper Country Code', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_shipper_email_address',
-						'title'=>__('Shipper Email Address', 'shipping-label-gen'),
+						'title'=>__('Shipper Email Address', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 					array(
 						'id'=> 'ups_phone_number',
-						'title'=>__('Shipper Phone Number', 'shipping-label-gen'),
+						'title'=>__('Shipper Phone Number', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this, 'text_callback']
 					),
 				)
@@ -172,14 +172,14 @@ class Shipping_Label_Generator_Admin_UPS {
 		?>
 		<div class="wrap">  
 			<div id="icon-themes" class="icon32"></div>  
-			<h2><?php _e('UPS Settings', 'shipping-label-gen')?></h2>  
+			<h2><?php _e('UPS Settings', 'shipping-label-generator-with-ups')?></h2>  
 			<?php
 				settings_errors(); 
 				$active_tab = isset( $_GET[ 'tab' ] ) ? sanitize_text_field($_GET[ 'tab' ]) : 'first';  
 			?>
 			<h2 class="nav-tab-wrapper">  
-				<a href="?page=ups-setting-general-options&tab=first" class="nav-tab <?php echo esc_attr($active_tab) == 'first' ? 'nav-tab-active' : ''; ?>"><?php _e('Account & API Info', 'shipping-label-gen')?></a>  
-				<a href="?page=ups-setting-general-options&tab=second" class="nav-tab <?php echo esc_attr($active_tab) == 'second' ? 'nav-tab-active' : ''; ?>"><?php _e('Shipper Info', 'shipping-label-gen')?></a>
+				<a href="?page=ups-setting-general-options&tab=first" class="nav-tab <?php echo esc_attr($active_tab) == 'first' ? 'nav-tab-active' : ''; ?>"><?php _e('Account & API Info', 'shipping-label-generator-with-ups') ?></a>  
+				<a href="?page=ups-setting-general-options&tab=second" class="nav-tab <?php echo esc_attr($active_tab) == 'second' ? 'nav-tab-active' : ''; ?>"><?php _e('Shipper Info', 'shipping-label-generator-with-ups')?></a>
 			</h2>  
 
 			<form method="post" action="options.php">  

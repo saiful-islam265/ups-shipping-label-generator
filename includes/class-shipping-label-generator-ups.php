@@ -56,7 +56,7 @@ final class Shipping_Label_Generator_UPS {
 	 * @return mixed
 	 */
 	public function add_bol_column( $columns ){
-		$columns['ups_shipping_label'] = __("UPS Shipping Label", 'shipping-label-gen');
+		$columns['ups_shipping_label'] = __("UPS Shipping Label", 'shipping-label-generator-with-ups');
 		return $columns;
 	}
 
