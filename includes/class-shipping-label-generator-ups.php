@@ -116,19 +116,19 @@ final class Shipping_Label_Generator_UPS {
 	public function create_shipping_label($order_id){
 		$shipper_info = get_option('ups_shipper_info');
 		$api_info = get_option('ups_account_details');
-		$access_key = $api_info['Access Key/API Key'];
-		$ups_user_id = $api_info['UPS Username/UserID'];
-		$ups_user_pass = $api_info['UPS User Password'];
-		$account_number = $shipper_info['UPS Shipper Number / Account Number'];
-		$shipper_name = $shipper_info['Shipper Name'];
-		$attention_name = $shipper_info['Shipper Attention Name/ Business Name'];
-		$address_line = $shipper_info['Shipper Address Line'];
-		$postal_code = $shipper_info['Shipper Postal Code'];
-		$shipper_city = $shipper_info['Shipper City'];
-		$state_code = $shipper_info['Shipper State Province Code'];
-		$country_code = $shipper_info['Shipper Country Code'];
-		$shipper_email = $shipper_info['Shipper Email Address'];
-		$shipper_phone = $shipper_info['Shipper Phone Number'];
+		$access_key = $api_info['ups_access_key'];
+		$ups_user_id = $api_info['ups_access_userid'];
+		$ups_user_pass = $api_info['ups_access_userpass'];
+		$account_number = $shipper_info['ups_shipper_number'];
+		$shipper_name = $shipper_info['ups_shipper_name'];
+		$attention_name = $shipper_info['ups_shipper_attention_name'];
+		$address_line = $shipper_info['ups_shipper_address_line'];
+		$postal_code = $shipper_info['ups_shipper_postal_code'];
+		$shipper_city = $shipper_info['ups_shipper_city'];
+		$state_code = $shipper_info['ups_shipper_state_province_code'];
+		$country_code = $shipper_info['ups_shipper_country_code'];
+		$shipper_email = $shipper_info['ups_shipper_email_address'];
+		$shipper_phone = $shipper_info['ups_phone_number'];
 
 		$order = wc_get_order($order_id);
 		$items = $order->get_items();
