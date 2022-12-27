@@ -3,7 +3,7 @@
  * Plugin Name: Shipping Label PDF Generator With UPS For Woocommerce
  * Plugin URI:  http://www.saifulislam.dev/wc-ups-shipping-label-generator
  * Description: This plugin will create shipping label in pdf format for ups courier right after any order created from through.
- * Version:     1.0
+ * Version:     1.1
  * Requires at least: 5.0
  * Requires PHP:      5.4
  * Author:      Saiful Islam

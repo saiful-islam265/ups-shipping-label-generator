@@ -1,10 +1,10 @@
 === Shipping Label PDF Generator With UPS For Woocommerce ===
 Contributors: saiful96
 Tags: woocommerce, UPS, UPS Shipping Label, Shipping Label, Shipping Label PDF, PDF
-Requires at least: 4.7
+Requires at least: 5.0
 Tested up to: 6.1.1
-Requires PHP: 5.4
-Stable tag: 1.0
+Requires PHP: 7.4
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,3 +40,5 @@ No, you have to put valid address for UPS and proper API key and account info.
 == Changelog ==
 = 1.0 =
 * Initial release
+= 1.1 =
+* Added more input field type
