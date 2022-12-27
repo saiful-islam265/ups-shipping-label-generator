@@ -8,7 +8,7 @@ class Shipping_Label_Generator_Admin_UPS {
 	 *
 	 * @since    1.0.0
 	 */
-	public function __construct(  ) {
+	public function __construct() {
 		add_action("admin_init", [$this,"ups_setting_options"]);
 		add_action("admin_menu", [$this,"ups_setting_admin"]);
 	}
@@ -51,6 +51,21 @@ class Shipping_Label_Generator_Admin_UPS {
 						'id'=> 'ups_access_userpass',
 						'title'=>__('UPS User Password', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this,'text_callback']
+					),
+					array(
+						'id'=> 'ups_test_radio',
+						'title'=>__('UPS Radio Test', 'shipping-label-generator-with-ups'),
+						'callback'=> [$this,'radio_callback']
+					),
+					array(
+						'id'=> 'ups_test_checkbox',
+						'title'=>__('UPS Checkbox Test', 'shipping-label-generator-with-ups'),
+						'callback'=> [$this,'checkbox_callback']
+					),
+					array(
+						'id'=> 'ups_test_select',
+						'title'=>__('UPS Select Test', 'shipping-label-generator-with-ups'),
+						'callback'=> [$this,'select_callback']
 					),
 				)
 			),
@@ -129,16 +144,14 @@ class Shipping_Label_Generator_Admin_UPS {
 					$id,          // ID of the section
 					array(
 						$values['page'], //option name
-						$field['title'] //id 
+						$field['title'], //id
+						$field['id'], //id
 					) 
 				);
 			}
 			register_setting(
 				$values['page'],
 				$values['page'],
-				array(
-					'sanitize_callback' => [$this, 'sanitize_register_field']
-				)
 			);
 		} // end of foreach
 	} // end of ups_setting_options()
@@ -154,14 +167,76 @@ class Shipping_Label_Generator_Admin_UPS {
 		
 		return $option;
 	}
+
 	/**
 	 * Callback for text type input field rendering
 	 * @param mixed $args
 	 * @return void
 	 */
-	public function text_callback($args) { 
+	public function text_callback($args) {
 		$options = get_option($args[0]);
-		echo '<input type="text" class="regular-text" id="' . esc_attr($args[1]) . '" name="'. esc_html($args[0]) .'[' . esc_html($args[1]) . ']" value="' . esc_html($options['' . $args[1] . '']) . '"></input>';
+		$options = !empty($options) ? $options : array();
+		echo '<input type="text" class="regular-text" id="' . esc_attr($args[2]) . '" name="'. esc_html($args[0]) .'[' . esc_html($args[2]) . ']" value="' . esc_html($options[$args[2]]) . '">';
+	}
+
+	/**
+	 * Callback for radio type input field rendering
+	 * @param mixed $args
+	 * @return void
+	 */
+	public function radio_callback($args) {
+		$options = get_option($args[0]);
+		$mode_option = [
+			'sandbox' => 'Sandbox API',
+			'production' => 'Production API',
+		];
+		foreach($mode_option as $key => $value){
+			echo '<label for="' . esc_attr($value) . '" style="padding-right: 20px !important"><input type="radio" class="regular-text" id="' . esc_attr($value) . '" name="'. esc_html($args[0]) .'[' . esc_html($args[2]) . ']" value="'.$key.'" '.checked($options[$args[2]], $key, false).'>'.$value.'</label>';
+		}
+	}
+
+	/**
+	 * Callback for checkbox type input field rendering
+	 * @param mixed $args
+	 * @return void
+	 */
+	public function checkbox_callback($args) {
+		$options = get_option($args[0]);
+		$select_items = [
+			'TestOne' => 'Test One',
+			'TestTwo' => 'Test Two',
+			'TestThree' => 'Test Three',
+		];
+		echo '<fieldset>';
+		foreach ($select_items as $key => $value) {
+			$checked = '';
+			if(in_array($key, $options[$args[2]])){
+				$checked = 'checked';
+			}
+			echo '<label for="'.$key.'" style="padding-right: 20px !important"><input type="checkbox" class="regular-text" id="' . esc_attr($key) . '" name="'. esc_html($args[0]) .'[' . esc_html($args[2]) . '][]" value="'.$key.'" '.$checked.'>'.$value.'</label>';
+		}
+		echo '</fieldset>';
+	}
+
+	/**
+	 * Callback for select type input field rendering
+	 * @param mixed $args
+	 * @return void
+	 */
+	public function select_callback($args) {
+		$options = get_option($args[0]);
+		$option_items = [
+			'testOne' => 'Test option One',
+			'testTwo' => 'Test option Two',
+			'testThree' => 'Test option Three',
+			'testFour' => 'Test option Four',
+			'testFive' => 'Test option Five'
+		];
+		echo '<select type="text" class="regular-text" id="' . esc_attr($args[2]) . '" name="'. esc_html($args[0]) .'[' . esc_html($args[2]) . ']">';
+		foreach ($option_items as $key => $value) {
+			echo '<option value="'.$key.'" ' . selected($options[$args[2]], $key, false) . '>'.$value.'</option>';
+		}
+		echo '</select>';
 	}
 
 	/**
