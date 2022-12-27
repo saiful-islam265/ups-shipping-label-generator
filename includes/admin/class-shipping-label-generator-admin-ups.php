@@ -51,22 +51,7 @@ class Shipping_Label_Generator_Admin_UPS {
 						'id'=> 'ups_access_userpass',
 						'title'=>__('UPS User Password', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this,'text_callback']
-					),
-					array(
-						'id'=> 'ups_test_radio',
-						'title'=>__('UPS Radio Test', 'shipping-label-generator-with-ups'),
-						'callback'=> [$this,'radio_callback']
-					),
-					array(
-						'id'=> 'ups_test_checkbox',
-						'title'=>__('UPS Checkbox Test', 'shipping-label-generator-with-ups'),
-						'callback'=> [$this,'checkbox_callback']
-					),
-					array(
-						'id'=> 'ups_test_select',
-						'title'=>__('UPS Select Test', 'shipping-label-generator-with-ups'),
-						'callback'=> [$this,'select_callback']
-					),
+					)
 				)
 			),
 			'setting_2_id' => array(
