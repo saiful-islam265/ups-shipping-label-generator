@@ -1,5 +1,5 @@
 === Shipping Label PDF Generator With UPS For Woocommerce ===
-Contributors: saiful96
+Contributors: saiful96, ImtiazEpu
 Tags: woocommerce, UPS, UPS Shipping Label, Shipping Label, Shipping Label PDF, PDF
 Requires at least: 5.0
 Tested up to: 6.1.1

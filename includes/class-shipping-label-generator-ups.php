@@ -97,7 +97,7 @@ final class Shipping_Label_Generator_UPS {
 	 * 
 	 * @return void
 	 */
-	public function create_shipping_label_dir(){
+	public function create_shipping_label_dir(): void {
 		$upload_dir   = wp_upload_dir();
 		$shipping_dir = $upload_dir["basedir"] . "/shipping_label";
 		if (!file_exists($shipping_dir)) {
@@ -108,17 +108,19 @@ final class Shipping_Label_Generator_UPS {
 
 	/**
 	 * Creates shipping label in pdf through ups api and saves in wp directory
-	 * 
-	 * @param $order_id 
-	 * 
+	 *
+	 * @param $order_id
+	 *
 	 * @return void
+	 * @throws Exception
 	 */
-	public function create_shipping_label($order_id){
+	public function create_shipping_label($order_id): void {
 		$shipper_info = get_option('ups_shipper_info');
 		$api_info = get_option('ups_account_details');
 		$access_key = $api_info['ups_access_key'];
 		$ups_user_id = $api_info['ups_access_userid'];
 		$ups_user_pass = $api_info['ups_access_userpass'];
+		$ups_api_options = $api_info['ups_api_options'];
 		$account_number = $shipper_info['ups_shipper_number'];
 		$shipper_name = $shipper_info['ups_shipper_name'];
 		$attention_name = $shipper_info['ups_shipper_attention_name'];
@@ -284,7 +286,8 @@ final class Shipping_Label_Generator_UPS {
 		$this->shipment->setRateInformation($this->rateInformation);
 		// Get shipment info
 		try {
-			$this->api = new Ups\Shipping($access_key, $ups_user_id, $ups_user_pass);
+			$useIntegration     = 'sandbox' === $ups_api_options ? true : false;
+			$this->api = new Ups\Shipping($access_key, $ups_user_id, $ups_user_pass,$useIntegration);
 			$confirm = $this->api->confirm(\Ups\Shipping::REQ_VALIDATE, $this->shipment);
 			update_post_meta($order_id, 'created_shipments_details_array', (array) $confirm);
 			update_post_meta($order_id, 'ShipmentIdentificationNumber', $confirm->ShipmentIdentificationNumber);
@@ -295,6 +298,7 @@ final class Shipping_Label_Generator_UPS {
 			}
 		} catch (\Exception $e) {
 			echo $e->getMessage();
+			throw new Exception( 'Error from UPS ' . $e->getMessage() . '' );
 		}
 
 		//Generate GIF from UPS API response
