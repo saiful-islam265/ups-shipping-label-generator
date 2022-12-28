@@ -51,7 +51,12 @@ class Shipping_Label_Generator_Admin_UPS {
 						'id'=> 'ups_access_userpass',
 						'title'=>__('UPS User Password', 'shipping-label-generator-with-ups'),
 						'callback'=> [$this,'text_callback']
-					)
+					),
+                    array(
+	                    'id'=> 'ups_api_options',
+	                    'title'=>__('UPS API Options', 'shipping-label-generator-with-ups'),
+	                    'callback'=> [$this,'radio_callback']
+                    )
 				)
 			),
 			'setting_2_id' => array(
@@ -257,5 +262,4 @@ class Shipping_Label_Generator_Admin_UPS {
 		</div> 
 		<?php
 	}
-}
-// EOF
+}// EOF
